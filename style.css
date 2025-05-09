@@ -1,0 +1,9 @@
+/* Masquer toutes les sections par défaut */
+.dashboard-grid > div {
+    display: none;
+}
+
+/* Afficher la section active par défaut */
+#dashboard {
+    display: block;
+}

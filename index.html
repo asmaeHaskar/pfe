@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>HealthTrack360 - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css "/>
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        :root {
+            --primary: #2c7be5;
+            --primary-dark: #1a68d1;
+            --success: #00b894;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #f5f7fb;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .logo-icon {
+            color: var(--primary);
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+        }
+        .logo-text span {
+            color: var(--primary);
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .menu-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .menu-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        .menu-item:hover:not(.active) {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+        .user-info {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .user-role {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        .logout-btn {
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .welcome {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .welcome span {
+            font-weight: 400;
+            color: var(--gray);
+        }
+        .actions {
+            display: flex;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--gray);
+            margin-left: 10px;
+        }
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+        alert("Veuillez vous connecter.");
+        window.location.href = "login.html";
+    } else {
+        // Mise à jour du message de bienvenue
+        document.querySelector('.welcome').innerHTML = `
+            Bonjour ${user.fullName.split(" ")[0]}, <span>voici votre suivi de santé</span>
+        `;
+
+        // Mise à jour du nom dans la sidebar
+        document.querySelector('.user-name').textContent = user.fullName;
+    }
+</script>
+<div class="container">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+            <div class="logo-text">AK<span>RASS</span></div>
+        </div>
+        <div class="menu">
+            <a href="index.html" class="menu-item active">
+                <i class="fas fa-home"></i> Tableau de bord
+            </a>
+            <a href="appointments.html" class="menu-item">
+                <i class="fas fa-calendar-alt"></i> Rendez-vous
+            </a>
+            <a href="health-indicators.html" class="menu-item">
+                <i class="fas fa-chart-line"></i> Indicateurs santé
+            </a>
+            <a href="journal.html" class="menu-item">
+                <i class="fas fa-book-medical"></i> Journal médical
+            </a>
+            <a href="documents.html" class="menu-item">
+                <i class="fas fa-file-medical"></i> Documents
+            </a>
+            <a href="symptoms.html" class="menu-item">
+                <i class="fas fa-stethoscope"></i> Analyse symptômes
+            </a>
+            <a href="doctors.html" class="menu-item">
+                <i class="fas fa-user-md"></i> Mes médecins
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i> Paramètres
+            </a>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar">JD</div>
+            <div class="user-details">
+                <div class="user-name">Jean Dupont</div>
+                <div class="user-role">Patient</div>
+            </div>
+            <div class="logout-btn"><i class="fas fa-sign-out-alt"></i></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="welcome">Bonjour Jean, <span>voici votre suivi de santé</span></div>
+            <div class="actions">
+                <button class="btn btn-primary"><i class="fas fa-plus"></i> Nouveau RDV</button>
+                <button class="btn btn-outline"><i class="fas fa-download"></i> Exporter PDF</button>
+            </div>
+        </div>
+        <div class="dashboard-grid">
+            <!-- Stats Cards -->
+            <div class="card stats-card">
+    <div class="card-header">
+        <div class="card-title">Poids</div>
+        <div class="card-icon icon-blue"><i class="fas fa-weight"></i></div>
+    </div>
+    <div class="stats-value">
+        <div id="displayWeight"></div>
+        <input type="number" id="weightInput" value="78.5" step="0.1" placeholder="Poids en kg" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+    </div>
+    <div class="stats-label">+0.5 kg cette semaine</div>
+</div>
+            <div class="card stats-card">
+                <div class="card-header">
+                    <div class="card-title">Tension</div>
+                    <div class="card-icon icon-green"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="stats-value">120/80</div>
+                <div class="stats-label">Normale</div>
+            </div>
+            <div class="card stats-card">
+                <div class="card-header">
+                    <div class="card-title">Prochains RDV</div>
+                    <div class="card-icon icon-orange"><i class="fas fa-calendar-check"></i></div>
+                </div>
+                <div class="stats-value">3</div>
+                <div class="stats-label">Dans les 30 prochains jours</div>
+            </div>
+            <div class="card stats-card">
+                <div class="card-header">
+                    <div class="card-title">Documents</div>
+                    <div class="card-icon icon-red"><i class="fas fa-file-medical"></i></div>
+                </div>
+                <div class="stats-value">12</div>
+                <div class="stats-label">4 documents récents</div>
+            </div>
+            <!-- Chart Card -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <div class="card-title">Évolution des indicateurs</div>
+                    <select class="form-control" style="width: 120px;">
+                        <option>1 semaine</option>
+                        <option selected>1 mois</option>
+                        <option>3 mois</option>
+                        <option>1 an</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <img src="/api/placeholder/600/300" alt="Graphique d'évolution des indicateurs" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color color-blue"></div>
+                        <span>Poids (kg)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color color-green"></div>
+                        <span>Tension (systolique)</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Appointments -->
+            <div class="card appointments-card">
+                <div class="card-header">
+                    <div class="card-title">Prochains rendez-vous</div>
+                    <a href="#" style="color: var(--primary); font-size: 14px; text-decoration: none;">Voir tous</a>
+                </div>
+                <div class="appointment-list">
+                    <div class="appointment-item">
+                        <div class="appointment-date">
+                            <div class="date-day">15</div>
+                            <div class="date-month">Mai</div>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="appointment-title">Contrôle annuel</div>
+                            <div class="appointment-doctor">Dr. Sophie Martin - Médecin généraliste</div>
+                        </div>
+                        <div class="appointment-time">10:30</div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="appointment-date">
+                            <div class="date-day">22</div>
+                            <div class="date-month">Mai</div>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="appointment-title">Examen dentaire</div>
+                            <div class="appointment-doctor">Dr. Philippe Blanc - Dentiste</div>
+                        </div>
+                        <div class="appointment-time">14:15</div>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="appointment-date">
+                            <div class="date-day">05</div>
+                            <div class="date-month">Juin</div>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="appointment-title">Analyse de sang</div>
+                            <div class="appointment-doctor">Centre d'analyses médicales</div>
+                        </div>
+                        <div class="appointment-time">08:00</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Journal -->
+            <div class="card journal-card">
+                <div class="card-header">
+                    <div class="card-title">Journal médical</div>
+                    <button class="btn btn-primary journal-btn"><i class="fas fa-plus"></i> Ajouter</button>
+                </div>
+                <div class="journal-entry">
+                    <div class="journal-date">Aujourd'hui, 08:30</div>
+                    <div class="journal-text">
+                        Légère fatigue ce matin, difficulté à me concentrer.
+                    </div>
+                    <div class="journal-actions">
+                        <button class="btn btn-outline journal-btn"><i class="fas fa-pen"></i> Modifier</button>
+                        <button class="btn btn-outline journal-btn"><i class="fas fa-download"></i> PDF</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Documents -->
+            <div class="card documents-card">
+                <div class="card-header">
+                    <div class="card-title">Documents récents</div>
+                    <button class="btn btn-primary journal-btn"><i class="fas fa-upload"></i> Importer</button>
+                </div>
+                <div class="doc-item">
+                    <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="doc-details">
+                        <div class="doc-title">Résultats analyse sang</div>
+                        <div class="doc-info">PDF · 2.4 Mo · 02/05/2025</div>
+                    </div>
+                    <div class="doc-actions">
+                        <a href="#"><i class="fas fa-eye"></i></a>
+                        <a href="#"><i class="fas fa-download"></i></a>
+                    </div>
+                </div>
+                <div class="doc-item">
+                    <div class="doc-icon"><i class="fas fa-file-image"></i></div>
+                    <div class="doc-details">
+                        <div class="doc-title">Radiographie épaule</div>
+                        <div class="doc-info">JPG · 3.1 Mo · 15/04/2025</div>
+                    </div>
+                    <div class="doc-actions">
+                        <a href="#"><i class="fas fa-eye"></i></a>
+                        <a href="#"><i class="fas fa-download"></i></a>
+                    </div>
+                </div>
+            </div>
+           
+
+            
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        if (!user) {
+            alert("Veuillez vous connecter.");
+            window.location.href = "login.html";
+        } else {
+            // Affichage dans la console pour débugger
+            console.log("Utilisateur connecté :", user);
+
+            // Mettre à jour le message de bienvenue
+            document.querySelector('.welcome').innerHTML = `
+                Bonjour ${user.fullName.split(" ")[0]}, <span>voici votre suivi de santé</span>
+            `;
+
+            // Mettre à jour le nom dans la sidebar
+            document.querySelector('.user-name').textContent = user.fullName;
+
+            // Mettre à jour l'avatar (ex: Jean Dupont → JD)
+            const initials = user.fullName.split(" ").map(n => n[0]).join("").toUpperCase();
+            document.querySelector('.user-avatar').textContent = initials;
+        }
+    });
+</script>
+<script>
+    // === Ton code pour gérer le poids ===
+    let weight = parseFloat(localStorage.getItem("userWeight")) || 78.5;
+    document.getElementById('weightInput').value = weight;
+    const currentWeight = localStorage.getItem("userWeight") || "Non renseigné";
+document.getElementById("displayWeight").textContent = currentWeight + " kg";
+    document.getElementById('weightInput').addEventListener('change', function () {
+        const newWeight = parseFloat(this.value);
+        if (!isNaN(newWeight)) {
+            localStorage.setItem("userWeight", newWeight);
+            alert(`Votre poids a été mis à jour : ${newWeight} kg`);
+        } else {
+            alert("Veuillez entrer un nombre valide.");
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('healthChart').getContext('2d');
+
+        const weightData = [78.5, 78.3, 78.6, 78.7, 78.9, 79.0, 78.8];
+        const tensionData = [120, 118, 121, 119, 122, 120, 121];
+        const labels = ['01/05', '02/05', '03/05', '04/05', '05/05', '06/05', '07/05'];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Poids (kg)',
+                        data: weightData,
+                        borderColor: '#2c7be5',
+                        backgroundColor: 'rgba(44, 123, 229, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Tension (systolique)',
+                        data: tensionData,
+                        borderColor: '#00b894',
+                        backgroundColor: 'rgba(0, 184, 148, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
+</body>
+</html>

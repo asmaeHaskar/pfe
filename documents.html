@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Documents Médicaux - HealthTrack360</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css "/>
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- Style spécifique à la page -->
+    <style>
+        body {
+            background: linear-gradient(to right bottom, #e9f5ff, #f5f7fb);
+            font-family: 'Segoe UI', sans-serif;
+            color: #343a40;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    /* Style visuel */
+    background: rgba(255, 255, 255, 0.2); /* Transparent */
+    backdrop-filter: blur(10px); /* Effet de flou */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilité Safari */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0 0 12px 12px;
+
+    /* Animation */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation au survol (optionnel) */
+.sidebar:hover {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Exemple pour les éléments dans la barre */
+.sidebar a {
+    color: #1e40af; /* Bleu profond */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #1e8daf;
+    color: white;
+}
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .menu-item:hover:not(.active) {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .user-info {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .logout-btn {
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .actions {
+            display: flex;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--gray);
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+
+        /* Card Documents */
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Importer un document */
+        .upload-box {
+            border: 2px dashed #cccccc;
+            border-radius: 12px;
+            text-align: center;
+            padding: 30px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-box:hover {
+            background-color: #f0f6ff;
+        }
+
+        .upload-box i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .upload-box p {
+            margin: 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .upload-box input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Liste des documents */
+        .doc-list {
+            margin-top: 20px;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .doc-item:last-child {
+            border-bottom: none;
+        }
+
+        .doc-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .doc-icon i {
+            font-size: 20px;
+        }
+
+        .icon-pdf {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .icon-image {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .icon-word {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .icon-other {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .doc-details {
+            flex-grow: 1;
+        }
+
+        .doc-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .doc-info {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .doc-actions a {
+            margin-left: 10px;
+            color: var(--gray);
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .doc-actions a:hover {
+            color: var(--primary);
+        }
+
+        @media screen and (max-width: 768px) {
+            .actions {
+                flex-wrap: wrap;
+            }
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+                 color: rgb(255, 255, 255);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+        <div class="logo-text">AK<span>RASS</span></div>
+    </div>
+    <div class="menu">
+        <a href="#" class="menu-item active">
+            <i class="fas fa-file-medical"></i> Documents médicaux
+        </a>
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i> Tableau de bord
+        </a>
+        <a href="appointments.html" class="menu-item">
+            <i class="fas fa-calendar-alt"></i> Rendez-vous
+        </a>
+        <a href="health-indicators.html" class="menu-item">
+            <i class="fas fa-chart-line"></i> Indicateurs santé
+        </a>
+        <a href="journal.html" class="menu-item">
+            <i class="fas fa-book-medical"></i> Journal médical
+        </a>
+        <a href="symptoms.html" class="menu-item">
+            <i class="fas fa-stethoscope"></i> Analyse symptômes
+        </a>
+        <a href="doctors.html" class="menu-item">
+            <i class="fas fa-user-md"></i> Mes médecins
+        </a>
+        <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i> Paramètres
+        </a>
+    </div>
+    <div class="user-info">
+        <div class="user-avatar">JD</div>
+        <div class="user-details">
+            <div class="user-name"></div>
+            <div class="user-role">Patient</div>
+        </div>
+        <div class="logout-btn"><i class="fas fa-sign-out-alt"></i></div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="header">
+        <div class="welcome">Mes documents médicaux</div>
+        <div class="actions">
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-upload"></i> Importer un document
+            </button>
+            <input type="file" id="fileInput" style="display: none;" />
+        </div>
+    </div>
+
+    <!-- Zone d'importation -->
+    <div class="card upload-box">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>Faites glisser ou cliquez ici pour importer un document médical</p>
+        <input type="file" multiple style="opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer;">
+    </div>
+
+    <!-- Liste des documents -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Documents récents</div>
+        </div>
+        <div class="doc-list">
+            <!-- Document 1 -->
+            <div class="doc-item">
+                <div class="doc-icon icon-pdf">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Résultats analyse sang</div>
+                    <div class="doc-info">PDF · 2.4 Mo · 02/05/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+
+            <!-- Document 2 -->
+            <div class="doc-item">
+                <div class="doc-icon icon-image">
+                    <i class="fas fa-file-image"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Radiographie épaule</div>
+                    <div class="doc-info">JPG · 3.1 Mo · 15/04/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+
+            <!-- Document 3 -->
+            <div class="doc-item">
+                <div class="doc-icon icon-word">
+                    <i class="fas fa-file-word"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Bilan général</div>
+                    <div class="doc-info">DOCX · 540 Ko · 10/04/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+
+            <!-- Document 4 -->
+            <div class="doc-item">
+                <div class="doc-icon icon-other">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Ordonnance cardiaque</div>
+                    <div class="doc-info">TXT · 30 Ko · 01/04/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section historique -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Historique complet</div>
+        </div>
+        <div class="doc-list">
+            <!-- Exemple -->
+            <div class="doc-item">
+                <div class="doc-icon icon-pdf">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Analyse sanguine - Mars 2025</div>
+                    <div class="doc-info">PDF · 1.2 Mo · 15/03/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+
+            <div class="doc-item">
+                <div class="doc-icon icon-image">
+                    <i class="fas fa-file-image"></i>
+                </div>
+                <div class="doc-details">
+                    <div class="doc-title">Scanner poumon droit</div>
+                    <div class="doc-info">PNG · 2.1 Mo · 08/03/2025</div>
+                </div>
+                <div class="doc-actions">
+                    <a href="#" title="Visualiser"><i class="fas fa-eye"></i></a>
+                    <a href="#" download title="Télécharger"><i class="fas fa-download"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Activer/désactiver le menu actif dans le sidebar
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Effet hover sur les cartes
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 200);
+        });
+    });
+
+    // Gestion de l'importation de fichiers
+    document.querySelector('#fileInput').addEventListener('change', function () {
+        const files = this.files;
+        if (files.length > 0) {
+            let fileNames = '';
+            for (let i = 0; i < files.length; i++) {
+                fileNames += `<li>${files[i].name}</li>`;
+            }
+            alert("Fichiers importés :\n" + [...this.files].map(f => f.name).join("\n"));
+        }
+    });
+</script>
+
+</body>
+</html>

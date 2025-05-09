@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Rendez-vous - HealthTrack360</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css "/>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body {
+            background: linear-gradient(to right bottom, #e9f5ff, #f5f7fb);
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--dark);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+       
+        .sidebar {
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    /* Style visuel */
+    background: rgba(255, 255, 255, 0.2); /* Transparent */
+    backdrop-filter: blur(10px); /* Effet de flou */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilité Safari */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0 0 12px 12px;
+
+    /* Animation */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation au survol (optionnel) */
+.sidebar:hover {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Exemple pour les éléments dans la barre */
+.sidebar a {
+    color: #1e40af; /* Bleu profond */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #1e8daf;
+    color: white;
+}
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .menu-item:hover:not(.active) {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .user-info {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .logout-btn {
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--gray);
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .appointment-list {
+            margin-top: 15px;
+        }
+
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .appointment-date {
+            width: 45px;
+            height: 45px;
+            background-color: var(--gray-light);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .date-day {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .date-month {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .appointment-details {
+            flex-grow: 1;
+        }
+
+        .appointment-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .appointment-doctor {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .appointment-time {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .appointment-item {
+                flex-wrap: wrap;
+            }
+            .appointment-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="logo-text">Health<span>Track360</span></div>
+    </div>
+    <div class="menu">
+        <a href="index.html" class="menu-item">
+            <i class="fas fa-home"></i> Tableau de bord
+        </a>
+        <a href="#" class="menu-item active">
+            <i class="fas fa-calendar-alt"></i> Rendez-vous
+        </a>
+        <a href="health-indicators.html" class="menu-item">
+            <i class="fas fa-chart-line"></i> Indicateurs santé
+        </a>
+        <a href="journal.html" class="menu-item">
+            <i class="fas fa-book-medical"></i> Journal médical
+        </a>
+        <a href="documents.html" class="menu-item">
+            <i class="fas fa-file-medical"></i> Documents
+        </a>
+        <a href="symptoms.html" class="menu-item">
+            <i class="fas fa-stethoscope"></i> Analyse symptômes
+        </a>
+        <a href="doctors.html" class="menu-item">
+            <i class="fas fa-user-md"></i> Mes médecins
+        </a>
+        <a href="settings.html" class="menu-item">
+            <i class="fas fa-cog"></i> Paramètres
+        </a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h2>Mes Rendez-vous</h2>
+
+    <!-- Formulaire de nouveau rendez-vous -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Prendre un nouveau rendez-vous</div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="doctorSelect">Médecin</label>
+            <select id="doctorSelect" class="form-control" required>
+                <option value="">-- Sélectionner --</option>
+                <option value="Dr. Sophie Martin - Médecin généraliste">Dr. Sophie Martin - Médecin généraliste</option>
+                <option value="Dr. Philippe Blanc - Dentiste">Dr. Philippe Blanc - Dentiste</option>
+                <option value="Centre d'analyses médicales">Centre d'analyses médicales</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="dateInput">Date et Heure</label>
+            <input type="datetime-local" id="dateInput" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="reasonInput">Motif du rendez-vous</label>
+            <textarea id="reasonInput" class="form-control" rows="4" placeholder="Ex: Consultation générale..."></textarea>
+        </div>
+        <button onclick="addAppointment()" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Prendre un rendez-vous
+        </button>
+    </div>
+
+    <!-- Liste des rendez-vous -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Prochains rendez-vous</div>
+        </div>
+        <div class="appointment-list" id="appointmentList">
+            <p style="color: #888;">Aucun rendez-vous prévu.</p>
+        </div>
+    </div>
+
+    <!-- Calendrier interactif -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Calendrier des disponibilités</div>
+        </div>
+        <input type="text" id="datepicker" placeholder="Sélectionnez une date" readonly class="form-control">
+        <p id="selected-date-info" style="margin-top: 10px; font-size: 14px;"></p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js "></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css ">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js "></script>
+
+<script>
+    // Récupère les rendez-vous depuis localStorage
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+    function saveAppointments() {
+        localStorage.setItem("appointments", JSON.stringify(appointments));
+    }
+
+    function displayAppointments() {
+        const list = document.getElementById('appointmentList');
+        list.innerHTML = "";
+
+        if (appointments.length === 0) {
+            list.innerHTML = "<p style='color: #888;'>Aucun rendez-vous prévu.</p>";
+            return;
+        }
+
+        appointments.forEach(appt => {
+            const item = document.createElement('div');
+            item.className = 'appointment-item';
+            item.innerHTML = `
+                <div class="appointment-date">
+                    <div class="date-day">${appt.date.split(' ')[0].split('/')[0]}</div>
+                    <div class="date-month">${getMonthName(appt.date.split(' ')[0].split('/')[1])}</div>
+                </div>
+                <div class="appointment-details">
+                    <div class="appointment-title">${appt.doctor}</div>
+                    <div class="appointment-doctor">${appt.reason}</div>
+                </div>
+                <div class="appointment-time">${appt.date.split(' ')[1] || "09:00"}</div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function getMonthName(monthNum) {
+        const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+        return months[parseInt(monthNum) - 1] || 'Mois inconnu';
+    }
+
+    function addAppointment() {
+        const doctor = document.getElementById('doctorSelect').value.trim();
+        const date = document.getElementById('dateInput').value.trim();
+        const reason = document.getElementById('reasonInput').value.trim();
+
+        if (!doctor || !date || !reason) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
+
+        // Ajouter le RDV à la liste
+        appointments.push({ doctor, reason, date });
+
+        saveAppointments();
+        displayAppointments();
+
+        // Réinitialiser le formulaire
+        document.getElementById('doctorSelect').value = "";
+        document.getElementById('dateInput').value = "";
+        document.getElementById('reasonInput').value = "";
+
+        alert("Rendez-vous ajouté !");
+    }
+
+    // Initialisation au chargement
+    window.onload = () => {
+        displayAppointments();
+
+        // Initialisation du calendrier
+        $("#datepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate: 0,
+            onSelect: function(dateText) {
+                $('#selected-date-info').text("Vous avez sélectionné : " + dateText);
+            }
+        });
+    };
+</script>
+
+</body>
+</html>

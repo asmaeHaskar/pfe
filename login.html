@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion - AKRASS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css  "/>
+  <style>
+    :root {
+      --primary: #4e8cff;
+      --secondary: #edf2fa;
+      --text-dark: #1f2937;
+      --error: #e74c3c;
+      --shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #f0f4ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease;
+      transition: all 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: scale(1.02);
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-logo i {
+      font-size: 50px;
+      color: var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    .login-logo span {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+      letter-spacing: 1px;
+      animation: fadeInRight 1s ease;
+    }
+
+    .login-title {
+      font-size: 26px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+      color: var(--text-dark);
+    }
+
+    .form-group {
+      margin-top: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      background: var(--secondary);
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 10px rgba(78, 140, 255, 0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background-color: #3a70dc;
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 14px;
+      margin-top: 15px;
+      display: none;
+      text-align: center;
+      animation: shake 0.3s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(-15px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-5px);
+      }
+      75% {
+        transform: translateX(5px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-logo">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="fas fa-heartbeat"></i>
+        <span>AKRASS</span>
+      </div>
+      <div class="login-title">Se connecter</div>
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="vous@example.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Mot de passe</label>
+        <input type="password" class="form-control" id="password" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="btn-login">Se connecter</button>
+      <div id="errorMessage" class="error-message">Identifiants incorrects.</div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const error = document.getElementById('errorMessage');
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(user => user.email === email && user.password === password);
+
+      if (user) {
+        error.style.display = 'none';
+        alert("Connexion réussie !");
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        window.location.href = "index.html";
+      } else {
+        error.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
